@@ -1,6 +1,6 @@
 ```markdown
 ### Core
-[ ] **Initialize Next.js Frame Structure**  
+[x] **Initialize Next.js Frame Structure**  
 - Create base endpoint and metadata configuration  
 - **Validation**: `GET /api/frame` returns valid Frame metadata  
 - _Files_: pages/api/frame.ts, lib/farcaster.ts
