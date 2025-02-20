@@ -1,10 +1,22 @@
-export type FrameButtonProps = {
-  label: string;
-  action?: "post" | "post_redirect" | "link";
-  target?: string;
-};
+import { z } from "zod";
 
-type FrameMetadataProps = {
+// Validation schemas
+export const FrameButtonSchema = z.object({
+  label: z.string().min(1).max(24),
+  action: z.enum(["post", "post_redirect", "link"]).optional(),
+  target: z.string().url().optional(),
+});
+
+export const FrameMetadataSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  buttons: z.array(FrameButtonSchema).max(4).optional(),
+  postUrl: z.string().url().optional(),
+});
+
+export type FrameButtonProps = z.infer<typeof FrameButtonSchema>;
+export type FrameMetadataProps = z.infer<typeof FrameMetadataSchema> & {
   title: string;
   description?: string;
   image?: string;
@@ -12,13 +24,16 @@ type FrameMetadataProps = {
   postUrl?: string;
 };
 
-export function getFrameMetadata({
-  title,
-  description,
-  image = "/opengraph-image",
-  buttons = [],
-  postUrl = "/api/frame",
-}: FrameMetadataProps): string {
+export function getFrameMetadata(props: FrameMetadataProps): string {
+  // Validate inputs
+  const validated = FrameMetadataSchema.parse({
+    ...props,
+    image: props.image ?? "/opengraph-image",
+    buttons: props.buttons ?? [],
+    postUrl: props.postUrl ?? "/api/frame",
+  });
+
+  const { title, description, image, buttons, postUrl } = validated;
   const metadata = [
     `<meta property="fc:frame" content="vNext" />`,
     `<meta property="fc:frame:image" content="${image}" />`,
