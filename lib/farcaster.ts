@@ -1,4 +1,4 @@
-type FrameButtonProps = {
+export type FrameButtonProps = {
   label: string;
   action?: "post" | "post_redirect" | "link";
   target?: string;

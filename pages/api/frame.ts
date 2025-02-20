@@ -1,6 +1,6 @@
 import { type NextRequest } from "next/server";
-import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "~/lib/constants";
-import { getFrameMetadata } from "~/lib/farcaster";
+import { PROJECT_TITLE, PROJECT_DESCRIPTION } from "@/lib/constants";
+import { getFrameMetadata } from "@/lib/farcaster";
 
 export const runtime = "edge";
 
